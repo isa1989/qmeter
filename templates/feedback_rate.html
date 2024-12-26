@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qmeter table</title>
+    <style>
+        table {
+            width: 85%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        tr:hover td {
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            font-family: 'Georgia', serif;
+            color: #4A90E2;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Qmeter table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Branch Name</th>
+                <th>Service Name</th>
+                <th>Score</th>
+                <th>Pythonic Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for branch in data %}
+                {% if branch.services %}
+                    <!-- Branch name will be shown only once -->
+                    <tr>
+                        <td rowspan="{{ branch.services|length }}">{{ branch.branch_name|default_if_none:"Without branch" }}</td>
+                        <td>{{ branch.services.0.service_name }}</td>
+                        <td>{{ branch.services.0.score }}</td>
+                        <td>
+                            <!-- Display Pythonic solution for the first service -->
+                            {% with score=branch.services.0.pythonic %}
+                                <p>{{ score }}</p>
+                            {% endwith %}
+                        </td>
+                    </tr>
+
+                    <!-- For the rest of the services, branch_name is not repeated -->
+                    {% for service in branch.services|slice:"1:" %}
+                        <tr>
+                            <td>{{ service.service_name }}</td>
+                            <td>{{ service.score }}</td>
+                            <td>
+                                <!-- Display Pythonic solution for each service -->
+                                {% with score=service.pythonic %}
+                                    <p>{{ score }}</p>
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
