@@ -119,6 +119,4 @@ class MongoAggregation:
             {"$project": {"_id": 0, "branch_name": "$_id", "services": 1}},
         ]
 
-        print("Existing collections:", list(self.collection.aggregate(pipeline)))
-
         return list(self.collection.aggregate(pipeline))
