@@ -3,18 +3,15 @@ import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
-# .env faylını yükləyirik
 load_dotenv()
 
 
 class MongoAggregation:
     def __init__(self):
-        # .env faylından məlumatları oxuyuruq
         self.db_name = os.getenv("DATABASE_NAME")
         self.collection_name = "feed_collection"
         self.mongo_host = os.getenv("DATABASE_HOST")
-        self.mongo_port = os.getenv("DATABASE_PORT", 27017)  # Varsayılan port
-        # MongoDB ilə əlaqə qururuq
+        self.mongo_port = os.getenv("DATABASE_PORT", 27017)
         self.client = MongoClient(
             f"mongodb://{self.mongo_host}:{self.mongo_port}/{self.db_name}"
         )
